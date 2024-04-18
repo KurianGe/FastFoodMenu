@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="welcome-text">Welcome to Fast Food Shop</h1>
+    <h2>Login</h2> <!-- Modify this line -->
+    <form action="{{ url_for('login') }}" method="post" class="login-form">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <div class="signup-option">
+        <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+    </div>
+</div>
+
+<style>
+/* Style for the login form */
+body {
+    background-image: url('https://img.freepik.com/free-vector/fast-food-background_23-2147664699.jpg?w=740&t=st=1713452527~exp=1713453127~hmac=881f71489069d729e3a1c201437ab85a6586a3802411933f83229e7ff44f521c'); /* Replace 'path/to/your/image.jpg' with the actual path to your background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a box shadow to make the container stand out */
+    background-color: rgba(255, 255, 255, 0.7); /* Add a semi-transparent white background color */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Style for the signup option */
+.signup-option {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.signup-option a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.signup-option a:hover {
+    text-decoration: underline;
+}
+.welcome-text {
+    color: #FF6347; /* Set your desired color for the welcome text */
+}
+
+</style>
+{% endblock %}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Food Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://www.shutterstock.com/shutterstock/photos/1845185635/display_1500/stock-vector-seamless-pattern-with-burgers-and-fast-food-1845185635.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .user-info {
+            text-align: center;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .button-container form {
+            margin: 0 10px;
+        }
+        .menu-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #e74c3c; /* Red color, change to your preference */
+            font-size: 36px; /* Increase the font size, change to your preference */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        form {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button.show-info {
+            background-color: #008CBA;
+        }
+        button.show-info:hover {
+            background-color: #0073e6;
+        }
+        ul.menu-items-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .menu-item {
+            flex-basis: calc(33.333% - 20px);
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .menu-item h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .menu-item p {
+            margin: 10px 0;
+        }
+        .rating select {
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .rating button {
+            margin-left: 10px;
+        }
+        .menu-item img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="menu-title">Fast Food Menu</h1>
+        <div class="user-info">
+            {% if session.logged_in %}
+                <p>Welcome, {{ session.get('username', 'Guest') }}!</p>
+                <div class="button-container">
+                    <form action="{{ url_for('show_coupon') }}" method="get">
+                        <button type="submit">Show Available Coupons</button>
+                    </form>
+                    <form action="{{ url_for('get_events_route') }}" method="get">
+                        <button type="submit">Upcoming Events</button>
+                    </form>
+                </div>
+                <form action="{{ url_for('signout') }}" method="get">
+                    <button type="submit">Sign Out</button>
+                </form>
+            {% else %}
+                <p>Welcome, Guest!</p>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="itemName">Search for an Item:</label>
+            <input type="text" id="itemName" placeholder="E.g., Spaghetti ">
+            <button class="show-info" onclick="showAllergenInfo()">View Allergen Info</button>
+        </div>
+        <div id="allergenInfoContainer"></div>
+        
+        <ul class="menu-items-container">
+            {% for item in menu %}
+            <li class="menu-item">
+                <h2>{{ item.name }}</h2>
+                <img src="{{ item.image_url }}" alt="{{ item.name }}"> 
+                <p>{{ item.description }}</p>
+                <p>Price: ${{ item.price }}</p>
+                <div class="rating">
+                    <label for="rating{{ item.id }}">Rate:</label>
+                    <select id="rating{{ item.id }}">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button onclick="rateItem('{{ item.id }}')">Rate</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        function showAllergenInfo() {
+            const itemName = document.getElementById('itemName').value;
+            fetch('/get_allergen_info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'item_name': itemName}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                let allergenInfoHtml = '';
+                if (data.message) {
+                    allergenInfoHtml = `<p>${data.message}</p>`;
+                } else {
+                    allergenInfoHtml += `<p><strong>Product Name:</strong> ${data.product_name}</p>`;
+                    allergenInfoHtml += `<p><strong>Product ID:</strong> ${data.product_id}</p>`;
+                    allergenInfoHtml += `<p><strong>Allergens:</strong> ${data.allergens.join(', ')}</p>`;
+                    allergenInfoHtml += `<p><strong>Cross Contamination Risks:</strong> ${data.cross_contamination_risks}</p>`;
+                    allergenInfoHtml += `<p><strong>Labeling Information:</strong> ${data.labeling_information}</p>`;
+                }
+                document.getElementById('allergenInfoContainer').innerHTML = allergenInfoHtml;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function rateItem(itemId) {
+            const rating = document.getElementById('rating' + itemId).value;
+            fetch('/rate_item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'item_id': itemId, 'rating': rating}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

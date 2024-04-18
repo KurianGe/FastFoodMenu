@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Information</title>
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/free-vector/fast-food-background_23-2147664699.jpg?w=740&t=st=1713452527~exp=1713453127~hmac=881f71489069d729e3a1c201437ab85a6586a3802411933f83229e7ff44f521c');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .coupon-info {
+            margin-top: 20px;
+        }
+
+        .coupon-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .coupon-info p strong {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Coupon Information</h1>
+        <div class="coupon-info">
+            <p><strong>Coupon Code:</strong> {{ coupon_info.coupon_code }}</p>
+            <p><strong>Discount Amount:</strong>
+                {% if coupon_info.discount_type == 'percentage' %}
+                    {{ coupon_info.discount_amount }}%
+                {% else %}
+                    ${{ coupon_info.discount_amount }}
+                {% endif %}
+            </p>
+            <p><strong>Description:</strong> {{ coupon_info.description }}</p>
+            <p><strong>Validity:</strong> {{ coupon_info.validity }}</p>
+            <!-- Add more coupon details if needed -->
+        </div>
+    </div>
+</body>
+</html>

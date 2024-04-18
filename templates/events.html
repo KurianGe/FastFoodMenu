@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/free-photo/top-view-burgers-with-white-stripe_23-2148235010.jpg?w=1060&t=st=1713469892~exp=1713470492~hmac=b38c45851c9d17b6b268b7cd372f54f7f845a9cc00c7028af343f156ba0d95b7');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .event-info {
+            margin-top: 20px;
+        }
+
+        .event-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .event-info p strong {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Events</h1>
+        {% if event %}
+            <div class="event-info">
+                <!--<img src="{{ event.data.event_img }}" alt="Event Image">-->
+                <h2>{{ event.data.event_name }}</h2>
+                <p><strong>Location:</strong> {{ event.data.event_location }}</p>
+                <p><strong>Date:</strong> {{ event.data.event_date }}</p>
+                <!--<p><strong>Price:</strong> ${{ event.data.event_price }}</p>-->
+                <p><strong>Host:</strong> {{ event.data.event_host }}</p>
+                <p><strong>Description:</strong> {{ event.data.event_description }}</p>
+            </div>
+        {% else %}
+            <p>No event available</p>
+        {% endif %}
+    </div>
+</body>
+</html>
