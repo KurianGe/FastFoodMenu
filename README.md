@@ -1,4 +1,4 @@
-Welcome to Fast Food Menu Web Application
+Welcome to the Fast Food Menu Web Application
 
 To access the web application locally follow the steps:
 
@@ -8,12 +8,12 @@ $ source env/Scripts/activate
 
 Step 2: Install the dependencies from requirements.txt
 
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 Step 4: Run the application
 
 $ python app.py
 
-Step 5: Create an account using signup option and login using that account name and password.
+Step 5: Create an account using the signup option and log in using that account name and password.
 
 Enjoy using the Fast Food Menu Application
